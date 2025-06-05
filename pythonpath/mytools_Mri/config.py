@@ -59,25 +59,26 @@ class Config(object):
     def check_version(self):
         nodepath = "/org.openoffice.Setup/Product"
         version = get_configvalue(self.ctx, nodepath, "ooSetupVersion")
+        version = tuple(map(int,version.split('.')))
         name = get_configvalue(self.ctx, nodepath, "ooName")
-        if version >= "3.3":
+        if version >= (3, 3):
             if name in ("OpenOffice", "Apache OpenOffice", 
                         "OpenOffice.org", "OOo-dev"):
-                if version == "3.3":
+                if version == (3, 3):
                     Config.TAB = 0
                     Config.GRID = 1
                 else:
                     Config.TAB = 1
                     Config.GRID = 2
-                    if version > "3.4":
+                    if version > (3, 4):
                         Config.GRID_UPDATE = False
-            elif name == "LibreOffice":
-                if version == "3.3":
+            elif name.startswith("LibreOffice"):
+                if version == (3, 3):
                     Config.TAB = 0
                     Config.GRID = 1
                 else:
                     Config.TAB = 2
-                    Config.GRID = 2 if version >= "4.0" else 3
+                    Config.GRID = 2 # quick fix # 2 if version >= "4.0" else 3
             else:
                 pass
         if Config.TAB == 0:
