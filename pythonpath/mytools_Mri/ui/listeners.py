@@ -843,11 +843,10 @@ def set_listeners(self, use_grid=False, use_tab=False):
     self.splitter.addMouseMotionListener(listener)
     
     if not use_grid:
-        get_filler(info_0).addMouseListener(listener)
-        get_filler(info_1).addMouseListener(listener)
-        get_filler(info_2).addMouseListener(listener)
-        get_filler(info_3).addMouseListener(listener)
-    
+        for info in (info_0, info_1, info_2, info_3):
+            if (f:=get_filler(info)):
+                f.addMouseListener(listener) 
+                
     filler = get_filler(cont.getControl('edit_code'))
     if filler: filler.addMouseListener(listener)
     listeners['splitter'] = listener
